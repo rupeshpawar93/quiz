@@ -1,7 +1,8 @@
 'use strict'
 import jwt from 'jsonwebtoken';
 import { constantVariables } from '../utilties/index.js';
-const { JWT_SECRET } = process.env;
+
+const JWT_SECRET = process.env.JWT_SECRET ?? 'secret';
 
 // Middleware to generate JWT token
 function generateToken(payload) {

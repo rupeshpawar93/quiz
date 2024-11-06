@@ -1,10 +1,8 @@
 'use strict'
 
-import bcrypt from 'bcrypt';
-import { UserModel } from "../services/index.js"
+import { Users } from "../models/index.js"
 import { ResponseBody } from "../utilties/index.js"
 import { generateToken } from "../middlewares/auth.js";
-import { createUser, findOneUser } from '../repository/index.js';
 
 const UserController = {
     signIn,
@@ -19,7 +17,8 @@ const UserController = {
  * @returns user details.
  */
 async function signUp(req, res, next) {
-    const data = await createUser(req.body);
+    const id = Users.length === 0 ? 1: user.length+1; 
+    const data = await Users.push({ id, ...req.body});
     const responseBody = new ResponseBody(200, 'User Successful created', data)
     res.body = responseBody
     process.nextTick(next)
@@ -34,22 +33,23 @@ async function signUp(req, res, next) {
  */
 async function signIn(req, res, next) {
     const { username, password } = req.body;
-    const where = { username: req.body.username, active: true }
-    const user = await findOneUser({ where });
-
-    if (!user) {
-        return res.status(400).json({ error: [{ status: false, msg: "User not found!", path: "username" }] })
+    
+    if (Users.length === 0) {
+        return res.status(400).json({ error: [{ status: false, msg: "No User created yet!" }] })
     }
 
-    const isMatch = await bcrypt.compare(req.body.password, user.password);
+    const userData = Users.find(u=> {
+        return u.username == username
+    });
 
-    if (!isMatch) {
-        const error = new Error("Password is wrong!");
-        error.statusCode = 400;
-        return res.status(400).json({ error: [{ status: false, msg: "Password is wrong!", path: "password" }] })
+    if(!userData) {
+        return res.status(400).json({ error: [{ status: false, msg: "No user found"}] });
     }
-    const token = generateToken({ id: user.id, role: user.role });
-    const responseBody = new ResponseBody(200, 'User Signin Successful', { token, isAdmin: user.role === 'admin' ? true : false });
+    if(userData.password  != password) {
+        return res.status(400).json({ error: [{ status: false, msg: "Password is wrong!"}] });
+    }
+    const token = generateToken({ id: userData.id });
+    const responseBody = new ResponseBody(200, 'User Signin Successful', { token });
     res.body = responseBody
     process.nextTick(next);
 }

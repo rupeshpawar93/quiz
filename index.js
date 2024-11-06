@@ -1,16 +1,15 @@
 'use strict'
-
+import dotenv from 'dotenv'; 
+dotenv.config();
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import compression from 'compression';
 import bodyParser from 'body-parser'
 import Routes from './src/routes/index.js'
-import { configDotenv } from 'dotenv';
+
 import { constantVariables } from './src/utilties/index.js';
 import { verifyToken } from './src/middlewares/auth.js';
-import { sequelize } from './src/services/index.js';
-configDotenv();
 
 const app = express();
 const port = process.env.PORT ?? constantVariables.PORT;
