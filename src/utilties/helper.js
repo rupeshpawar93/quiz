@@ -52,3 +52,7 @@ export const routeSanity = (request, response, next) => {
   request.isMatched = true
   process.nextTick(next)
 };
+
+export const calculateScore = () => {
+  
+}

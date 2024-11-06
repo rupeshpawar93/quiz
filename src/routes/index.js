@@ -1,12 +1,16 @@
 'use strict'
 
 import { ResponseBody, handleResponse } from '../utilties/index.js'
-import QuizRouter from './quizRoute.js'
-import UserRouter from './userRoute.js'
+import QuizRouter from './quizRoute.js';
+import UserRouter from './userRoute.js';
+import QuestionRouter from './questionRoute.js';
+import ResultRouter from './resultRoute.js';
 
 const Routes = [
   { path: '/user', router: UserRouter },
-  { path: '/quiz', router: QuizRouter }
+  { path: '/quiz', router: QuizRouter },
+  { path: '/question', router: QuestionRouter },
+  { path: '/result', router: ResultRouter }
 ]
 
 Routes.init = (app) => {

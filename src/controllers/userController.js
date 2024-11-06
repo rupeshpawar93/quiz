@@ -43,7 +43,7 @@ async function signIn(req, res, next) {
     });
 
     if(!userData) {
-        return res.status(400).json({ error: [{ status: false, msg: "No user found"}] });
+        return res.status(404).json({ error: [{ status: false, msg: "No user found"}] });
     }
     if(userData.password  != password) {
         return res.status(400).json({ error: [{ status: false, msg: "Password is wrong!"}] });

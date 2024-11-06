@@ -8,7 +8,7 @@ quiz
 
 user_assigned_quiz
     user_id
-    quiz_id
+    quiz_id 
 
 questions
     id

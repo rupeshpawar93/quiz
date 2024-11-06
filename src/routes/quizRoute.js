@@ -1,3 +1,5 @@
+'use strict'
+
 import Express from 'express'
 import { QuizController } from "../controllers/index.js";
 import { asyncWrapper, validate, routeSanity } from "../utilties/index.js";

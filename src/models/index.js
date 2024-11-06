@@ -20,19 +20,26 @@ const Quizs = [];
 * id
 * quiz_id
 * text
-* options
-* correct_option
+* options: 
+* correct_option: string
 **/ 
 const Questions = [];
 
 /*
-* id
-* question_id
-* selected_options
+* id: number
+* question_id: number
+* selected_options: string
 **/ 
 const Answers = []
 
-const Result = []
+/*
+* id
+* user_id: number
+* quiz_id: number
+* score: { correct, incorrect, notanswered }
+* answerList: Array<{ question_id, answer }>
+*/
+const Results = []
 
 // Export all models as named exports
 export {
@@ -40,5 +47,5 @@ export {
   Quizs,
   Questions,
   Answers,
-  Result
+  Results
 };

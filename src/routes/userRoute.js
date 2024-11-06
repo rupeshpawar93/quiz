@@ -1,3 +1,5 @@
+'use strict'
+
 import Express from 'express'
 import { UserController } from "../controllers/index.js";
 import { asyncWrapper, validate, routeSanity } from "../utilties/index.js";
