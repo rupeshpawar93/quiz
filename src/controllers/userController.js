@@ -16,9 +16,9 @@ const UserController = {
  * @param res - The response object.
  * @returns user details.
  */
-async function signUp(req, res, next) {
-    const id = Users.length === 0 ? 1: user.length+1; 
-    const data = await Users.push({ id, ...req.body});
+function signUp(req, res, next) {
+    const id = Users.length === 0 ? 1: Users.length+1; 
+    const data = Users.push({ id, ...req.body});
     const responseBody = new ResponseBody(200, 'User Successful created', data)
     res.body = responseBody
     process.nextTick(next)
@@ -31,7 +31,7 @@ async function signUp(req, res, next) {
  * @param res - The response object.
  * @returns user details with token and role.
  */
-async function signIn(req, res, next) {
+function signIn(req, res, next) {
     const { username, password } = req.body;
     
     if (Users.length === 0) {

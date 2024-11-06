@@ -1,5 +1,6 @@
 import http from 'http'
 import { validationResult } from 'express-validator';
+import { Questions, Results } from '../models/index.js';
 
 export const asyncWrapper = (fn) => {
   return function (req, res, next) {
@@ -53,6 +54,36 @@ export const routeSanity = (request, response, next) => {
   process.nextTick(next)
 };
 
-export const calculateScore = () => {
-  
+export const calculateScore = (status, user_id, quiz_id, question_id, selected_option) => {
+  const resultData = Results.find(result=> result.user_id == user_id && result.quiz_id == quiz_id);
+  const questionCount = Questions.filter(question=> question.quiz_id == quiz_id).length;
+  if (resultData) {
+    if (status === 'incorrect') {
+      resultData.score.incorrect = Number(resultData.score.incorrect+1);
+    } else if (status === 'correct') {
+      resultData.score.correct = Number(resultData.score.correct+1);
+    }
+    resultData.score.not_answered = questionCount - (resultData.score.incorrect + resultData.score.correct)
+    resultData.answerList = [...resultData.answerList, { question_id, selected_option}]
+    Results.splice(resultData.id, 1, resultData);
+  } else {
+    const id = Results.length === 0 ? 1: Results.length + 1;
+    const resultData = {
+      id,
+      user_id,
+      quiz_id: quiz_id,
+      score: { correct: 0, incorrect: 0, not_answered: 0 },
+      answerList: [{
+          question_id,
+          selected_option
+      }]
+    };
+    if (status === 'incorrect') {
+      resultData.score.incorrect = 1;
+    } else if (status === 'correct') {
+      resultData.score.correct = 1;
+    }
+    resultData.score.not_answered = questionCount - (resultData.score.incorrect + resultData.score.correct)
+    Results.push(resultData);
+  }
 }
