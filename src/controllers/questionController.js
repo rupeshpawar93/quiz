@@ -5,10 +5,11 @@ import { calculateScore } from "../utilties/helper.js";
 import { ResponseBody } from "../utilties/index.js"
 
 const QuestionController  = {
-    submit
+    submit,
+    checkIsQuestionAnswered
 }
 
-async function submit(req, res, next) {
+function submit(req, res, next) {
     const { user: user_id } = req;
     const { question_id, selected_option } = req.body;
     const questionResponse = Questions.find(question=> question.id == question_id);
@@ -23,7 +24,6 @@ async function submit(req, res, next) {
         return res.status(400).json({ error: [{ status: false, msg: `wrong answer correct ans is ${questionResponse.correct_ans}`}] });
     }
     calculateScore('correct', user_id, questionResponse.quiz_id, question_id, selected_option);
-   
     const responseBody = new ResponseBody(200, 'answer is correct');
     res.body = responseBody
     process.nextTick(next);
