@@ -35,6 +35,9 @@ describe('QuestionController.submit', () => {
         calculateScore.mockClear();
         ResponseBody.mockClear();
     });
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
 
     test('returns 404 when question is not found', () => {
         Questions.find = jest.fn(() => null); // No question found
@@ -72,7 +75,7 @@ describe('QuestionController.submit', () => {
             quiz_id: 1,
             answerList: [],
         }));
-        const responseBodyInstance = { status: 200, message: 'answer is correct' };
+        const responseBodyInstance = { status: 200, msg: 'answer is correct' };
         ResponseBody.mockImplementation(() => responseBodyInstance);
         QuestionController.submit(req, res, next);
         expect(ResponseBody).toHaveBeenCalledWith(200, 'answer is correct');

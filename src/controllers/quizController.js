@@ -5,7 +5,8 @@ import { ResponseBody } from "../utilties/index.js"
 
 const QuizController = {
     create,
-    getById
+    getById,
+    checkUniqueQuiz
 }
 
 function create(req, res, next) {
@@ -16,6 +17,7 @@ function create(req, res, next) {
         return res.status(409).json({ error: [{ status: false, msg: 'quiz already exist for this title'}] });
     }
     Quizs.push({ id: quiz_id, title});
+
     if(questions.length>0) {
         let question_id = Questions.length === 0 ? 1: Questions.length+1;
         questions.map(question=> {
@@ -48,7 +50,7 @@ function getById(req, res, next) {
         const { id: question_id, text, options } = question;
         return { question_id, text, options };
     })
-    const responseBody = new ResponseBody(200, 'Quiz Created Successful', { quiz: { ...quizResult, question: questionResult }});
+    const responseBody = new ResponseBody(200, 'Quiz fetched Successful', { quiz: { ...quizResult, question: questionResult }});
     res.body = responseBody
     process.nextTick(next);
 }
@@ -57,7 +59,7 @@ function checkUniqueQuiz(title) {
     if(Quizs.length === 0) {
         return true;
     }
-    const result = Quizs.find(quiz=>quiz.title === title);
+    const result = Quizs.find(quiz=>quiz.title === title) ?? [];
     return result.length === 0 ? true: false;
 }
 
