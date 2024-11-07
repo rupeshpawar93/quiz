@@ -7,6 +7,13 @@ const ResultController = {
     getResult
 }
 
+/**
+ * Handles fetching score detail for a quiz of a user.
+ * @route GET /result/:id
+ * @param {Object} req - The request object containing the quiz id in req params and user_id in req.
+ * @param {Object} res - The response object to send back the result.
+ * @param {Function} next - The next middleware function to be executed.
+ */
 function getResult(req, res, next) {
     const { id } = req.params;
     const { user: user_id } = req;

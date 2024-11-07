@@ -54,6 +54,7 @@ export const routeSanity = (request, response, next) => {
   process.nextTick(next)
 };
 
+// calculate the score based on right ans and wrong ans
 export const calculateScore = (status, user_id, quiz_id, question_id, selected_option) => {
   const resultData = Results.find(result=> result.user_id == user_id && result.quiz_id == quiz_id);
   const questionCount = Questions.filter(question=> question.quiz_id == quiz_id).length;

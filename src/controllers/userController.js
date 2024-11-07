@@ -9,12 +9,14 @@ const UserController = {
     signUp
 }
 
+
 /**
- * create user.
- * @route POST /signup
- * @param req - The request body { name, username, password, role }.
- * @param res - The response object.
- * @returns user details.
+ * Handles signin.
+ * @route POST /user/signup
+ * @param {Object} req - The request body { name, username, password }.
+ * @param {Object} res - The response object to send back the result.
+ * @param {Function} next - The next middleware function to be executed.
+ * @returns {Object} user details.
  */
 function signUp(req, res, next) {
     const id = Users.length === 0 ? 1: Users.length+1; 
@@ -25,15 +27,16 @@ function signUp(req, res, next) {
 }
 
 /**
- * create signin.
- * @route POST /signin
- * @param req - The request body { username, password }.
- * @param res - The response object.
- * @returns user details with token and role.
+ * Handles signin.
+ * @route POST /user/signin
+ * @param {Object} req - The request body { username, password }.
+ * @param {Object} res - The response object to send back the result.
+ * @param {Function} next - The next middleware function to be executed.
+ * @returns {Object} user details with token and role.
  */
 function signIn(req, res, next) {
     const { username, password } = req.body;
-    
+    // Check if No Users found in Users
     if (Users.length === 0) {
         return res.status(400).json({ error: [{ status: false, msg: "No User created yet!" }] })
     }
@@ -41,10 +44,11 @@ function signIn(req, res, next) {
     const userData = Users.find(u=> {
         return u.username == username
     });
-
+    // Check if User found in Users
     if(!userData) {
         return res.status(404).json({ error: [{ status: false, msg: "No user found"}] });
     }
+    // Check if password of the user
     if(userData.password  != password) {
         return res.status(400).json({ error: [{ status: false, msg: "Password is wrong!"}] });
     }
