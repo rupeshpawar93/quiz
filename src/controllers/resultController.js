@@ -8,9 +8,9 @@ const ResultController = {
 }
 
 function getResult(req, res, next) {
-    const { quizId } = req.params;
+    const { id } = req.params;
     const { user: user_id } = req;
-    const result = Results.find(result=> result.quiz_id == quizId && result.user_id == user_id);
+    const result = Results.find(result=> result.quiz_id == id && result.user_id == user_id);
     if(!result) {
         return res.status(404).json({ error: [{ status: false, msg: "No Quiz Found For User!"}] });
     }
